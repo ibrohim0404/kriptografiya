@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sezar Shifrlash Algoritmi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .advantages, .disadvantages {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .advantages h3 {
+            color: #27ae60;
+        }
+        .disadvantages h3 {
+            color: #e74c3c;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sezar Shifrlash Algoritmi</h1>
+    
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Caesar_cipher_left_shift_of_3.svg/1200px-Caesar_cipher_left_shift_of_3.svg.png" alt="Sezar shifrlash diagrammasi" title="Sezar shifrlash usuli">
+    
+    <p>Sezar shifrlash algoritmi - bu eng qadimgi va eng oddiy shifrlash usullaridan biri bo'lib, harflarni ma'lum bir son (kalit) bo'yicha siljitish asosida ishlaydi.</p>
+    
+    <h2>Tarixi</h2>
+    <p>Sezar shifrlash algoritmi miloddan avvalgi 1-asrda Rim imperatori <strong>Yuliy Sezar</strong> tomonidan harbiy xabarlarni himoya qilish uchun ishlab chiqilgan. Sezar o'z xabarlarida harflarni 3 ta orqaga siljitish usulidan foydalangan.</p>
+    
+    <h2>Shifrlash usuli</h2>
+    <p>Sezar shifrlashda har bir harf alifbodagi harflar orasida ma'lum bir miqdorda (odatda 3 ta) o'ngga siljiydi. Agar alifbo oxiriga yetib borilsa, boshidan davom etiladi.</p>
+    
+    <p><strong>Misol:</strong> "SALOM" so'zini 3 ta siljitish bilan shifrlaymiz:</p>
+    <ul>
+        <li>S → V</li>
+        <li>A → D</li>
+        <li>L → O</li>
+        <li>O → R</li>
+        <li>M → P</li>
+    </ul>
+    <p>Natija: <strong>VDORP</strong></p>
+    
+    <h2>Deshifrlash usuli</h2>
+    <p>Deshifrlash shifrlashga o'xshash, faqat teskari jarayon - harflar ma'lum miqdorda chapga siljiydi.</p>
+    
+    <p><strong>Misol:</strong> "VDORP" so'zini 3 ta siljitish bilan deshifrlaymiz:</p>
+    <ul>
+        <li>V → S</li>
+        <li>D → A</li>
+        <li>O → L</li>
+        <li>R → O</li>
+        <li>P → M</li>
+    </ul>
+    <p>Natija: <strong>SALOM</strong></p>
+    
+    <div class="advantages">
+        <h3>Sezar shifrlashning afzalliklari</h3>
+        <ul>
+            <li>Oddiy va tushunarli algoritm</li>
+            <li>Dasturlashda oson amalga oshiriladi</li>
+            <li>Kichik hajmdagi ma'lumotlarni tez shifrlash mumkin</li>
+            <li>Tarixiy ahamiyatga ega - kriptografiyaning asoslarini tushunishga yordam beradi</li>
+        </ul>
+    </div>
+    
+    <div class="disadvantages">
+        <h3>Sezar shifrlashning kamchiliklari</h3>
+        <ul>
+            <li>Xavfsizlik darajasi juda past - zamonaviy standartlar uchun yaroqsiz</li>
+            <li>Faqat 25 ta mumkin bo'lgan kalit (siljish) variantlari mavjud</li>
+            <li>Statistik tahlil orqali osondan buziladi</li>
+            <li>Faqat harflar bilan ishlaydi, raqamlar va boshqa belgilar bilan ishlamaydi</li>
+        </ul>
+    </div>
+    
+    <h2>Zamonaviy kriptografiyadagi o'rni</h2>
+    <p>Sezar shifrlash algoritmi zamonaviy standartlar uchun juda oddiy va xavfsiz emas. Biroq, u kriptografiyaning asosiy tushunchalarini o'rgatishda muhim rol o'ynaydi va ko'plab murakkabroq shifrlash algoritmlari uchun asos bo'lib xizmat qilgan.</p>
+     
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'about_algorithms' %}" class="btn btn-secondary">⬅️ Orqaga</a>
+    </div>
+    
+    <footer>
+        <p>© 2025 Kriptografiya asoslari | Sezar shifrlash algoritmi haqida</p>
+    </footer>
+</body>
+</html>

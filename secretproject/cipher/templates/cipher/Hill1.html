@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hill Shifrlash (2×2 va 3×3 Matritsalar)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #16a085;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .matrix {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .matrix-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .advantages, .disadvantages {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .advantages h3 {
+            color: #27ae60;
+        }
+        .disadvantages h3 {
+            color: #e74c3c;
+        }
+        .example {
+            background-color: #eaf7ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .important {
+            background-color: #fffde7;
+            padding: 15px;
+            border-left: 4px solid #ffd600;
+            margin: 20px 0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        .code {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .steps {
+            counter-reset: step-counter;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .steps li {
+            counter-increment: step-counter;
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 30px;
+        }
+        .steps li:before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            background-color: #3498db;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 0.8em;
+        }
+        .section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            color: #d35400;
+            margin-top: 0;
+        }
+        .comparison {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .comparison-col {
+            flex: 1;
+            min-width: 300px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hill Shifrlash Algoritmi (2×2 va 3×3 Matritsalar bilan)</h1>
+      <p>Hill shifrlash algoritmi - bu 1929-yilda Lester S. Hill tomonidan ishlab chiqilgan chiziqli algebra asosidagi shifrlash usuli. U matnni matritsalar yordamida shifrlash va deshifrlash imkonini beradi.</p>
+    
+    <h2>Tarixi</h2>
+    <p>Hill shifrlash algoritmi 1929-1931 yillarda amerikalik matematik <strong>Lester S. Hill</strong> tomonidan ishlab chiqilgan. Bu birinchi marta chiziqli algebra va matritsalarni kriptografiyada qo'llagan shifrlash usullaridan biri hisoblanadi.</p>
+    
+    <h2>Shifrlash usuli</h2>
+    <p>Hill shifrlash uchun quyidagilar kerak bo'ladi:</p>
+    <ol>
+        <li>Ochiq matn (shifrlanadigan matn)</li>
+        <li>Kalit matritsa (teskari hisoblash mumkin bo'lgan kvadrat matritsa)</li>
+        <li>Modul arifmetikasi (odatda 26 - ingliz alifbosi uchun)</li>
+    </ol>
+    <div class="section">
+        <h2 class="section-title">2×2 Matritsa bilan Hill Shifrlash</h2>
+        
+        <h3>Shifrlash misoli</h3>
+        <div class="example">
+            <p><strong>Kalit matritsa:</strong></p>
+            <div class="matrix">
+                [ 3 3 ]<br>
+                [ 2 5 ]
+            </div>
+            
+            <p><strong>Ochiq matn:</strong> "HELLO" → "HE LL O" (to'ldirish bilan)</p>
+            
+            <p><strong>Shifrlash:</strong></p>
+            <div class="matrix-container">
+                <div>
+                    <p>"HE" (7,4):</p>
+                    <div class="math">
+                        [3 3][7] = [3*7+3*4]=[33 mod26]=7=H<br>
+                        [2 5][4]   [2*7+5*4] [34 mod26]=8=I
+                    </div>
+                    <p>→ "HI"</p>
+                </div>
+                <div>
+                    <p>"LL" (11,11):</p>
+                    <div class="math">
+                        [3 3][11]=[3*11+3*11]=[66 mod26]=14=O<br>
+                        [2 5][11] [2*11+5*11] [77 mod26]=25=Z
+                    </div>
+                    <p>→ "OZ"</p>
+                </div>
+                <div>
+                    <p>"O" (14,0):</p>
+                    <div class="math">
+                        [3 3][14]=[42 mod26]=16=Q<br>
+                        [2 5][ 0] [28 mod26]=2=C
+                    </div>
+                    <p>→ "QC"</p>
+                </div>
+            </div>
+            <p><strong>Shifrlangan matn:</strong> <span class="code">HIOZQC</span></p>
+        </div>
+        
+        <h3>Teskari matritsa (2×2)</h3>
+        <div class="important">
+            <p>2×2 matritsa uchun teskari matritsa formulasi:</p>
+            <div class="matrix">
+                A = [a b]   A⁻¹ = (det(A))⁻¹ × [ d -b]<br>
+                    [c d]                     [-c  a]
+            </div>
+            
+            <ol class="steps">
+                <li><strong>Determinant:</strong> det = (3×5)-(3×2) = 15-6 = 9</li>
+                <li><strong>Mod26 teskarisi:</strong> 9×3=27≡1 mod26 → 3</li>
+                <li><strong>Teskari matritsa:</strong><br>
+                    3 × [ 5 -3] = [15 17]<br>
+                        [-2  3]   [20  9] (mod26)
+                </li>
+            </ol>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2 class="section-title">3×3 Matritsa bilan Hill Shifrlash</h2>
+        
+        <h3>Shifrlash misoli</h3>
+        <div class="example">
+            <p><strong>Kalit matritsa:</strong></p>
+            <div class="matrix">
+                [17 17  5]<br>
+                [21 18 21]<br>
+                [ 2  2 19]
+            </div>
+            
+            <p><strong>Ochiq matn:</strong> "CRYPTOGRAPHY" → "CRY PTO GRA PHY"</p>
+            
+            <p><strong>Shifrlash:</strong></p>
+            <div class="matrix-container">
+                <div>
+                    <p>"CRY" (2,17,24):</p>
+                    <div class="math">
+                        [17 17  5][ 2]   [17*2+17*17+5*24]   [483 mod26]=15=P<br>
+                        [21 18 21][17] = [21*2+18*17+21*24] = [756 mod26]=2=C<br>
+                        [ 2  2 19][24]   [ 2*2+ 2*17+19*24]   [494 mod26]=0=A
+                    </div>
+                    <p>→ "PCA"</p>
+                </div>
+                <div>
+                    <p>"PTO" (15,19,14):</p>
+                    <div class="math">
+                        [17 17  5][15]   [17*15+17*19+5*14]   [648 mod26]=24=Y<br>
+                        [21 18 21][19] = [21*15+18*19+21*14] = [939 mod26]=3=D<br>
+                        [ 2  2 19][14]   [ 2*15+ 2*19+19*14]   [334 mod26]=22=W
+                    </div>
+                    <p>→ "YDW"</p>
+                </div>
+            </div>
+            <p><strong>Shifrlangan matn:</strong> <span class="code">PCAYDW...</span> (to'liq misol qisqartirilgan)</p>
+        </div>
+        
+        <h3>Teskari matritsa (3×3)</h3>
+        <div class="important">
+            <p>3×3 matritsa uchun teskari matritsa topish:</p>
+            <ol class="steps">
+                <li><strong>Determinant hisoblash:</strong><br>
+                    det(A) = 17(18*19-21*2) - 17(21*19-21*2) + 5(21*2-18*2)<br>
+                    = 17(342-42) - 17(399-42) + 5(42-36) = 17*300 - 17*357 + 5*6<br>
+                    = 5100 - 6069 + 30 = -939 ≡ 23 mod26 (chunki -939+37*26=23)
+                </li>
+                <li><strong>Determinant teskarisi:</strong><br>
+                    23 × x ≡ 1 mod26 → x=17 (23×17=391≡1 mod26)
+                </li>
+                <li><strong>Kofaktor matritsasi:</strong><br>
+                    Har bir element uchun minorni hisoblash va (-1)<sup>i+j</sup> ga ko'paytirish
+                </li>
+                <li><strong>Adyung matritsa:</strong><br>
+                    Kofaktor matritsasini transponirlash
+                </li>
+                <li><strong>Teskari matritsa:</strong><br>
+                    Adyung matritsani determinant teskarisiga ko'paytirish va mod26 hisoblash<br><br>
+                    
+                    <strong>Natija:</strong><br>
+                    <div class="matrix">
+                        [ 4  9 15]<br>
+                        [15 17  6]<br>
+                        [24  0 17]
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </div>
+    
+    <div class="comparison">
+        <div class="comparison-col">
+            <h3>2×2 Matritsa</h3>
+            <ul>
+                <li>Oddiyroq hisob-kitoblar</li>
+                <li>Teskari matritsa osonroq topiladi</li>
+                <li>Xavfsizlik pastroq</li>
+                <li>Blok uzunligi 2 harf</li>
+                <li>Determinant formulasi: ad-bc</li>
+            </ul>
+        </div>
+        <div class="comparison-col">
+            <h3>3×3 Matritsa</h3>
+            <ul>
+                <li>Murakkabroq hisob-kitoblar</li>
+                <li>Teskari matritsa topish qiyinroq</li>
+                <li>Xavfsizlik yuqoriroq</li>
+                <li>Blok uzunligi 3 harf</li>
+                <li>Determinant hisobi murakkab</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="advantages">
+        <h3>Hill shifrlashning afzalliklari</h3>
+        <ul>
+            <li>Bir vaqtda bir nechta belgilarni shifrlaydi</li>
+            <li>Statistik tahlilga chidamli</li>
+            <li>Matritsa o'lchamini oshirib xavfsizlikni oshirish mumkin</li>
+            <li>Zamonaviy shifrlash usullarining asosi</li>
+        </ul>
+    </div>
+    
+    <div class="disadvantages">
+        <h3>Hill shifrlashning kamchiliklari</h3>
+        <ul>
+            <li>Katta matritsalar uchun hisob-kitoblar murakkab</li>
+            <li>Kalit matritsa uzunligi matn uzunligiga mos kelishi kerak</li>
+            <li>To'ldirish talab qilinishi mumkin</li>
+            <li>Matritsalar uchun modul arifmetikasi murakkab</li>
+        </ul>
+    </div>
+   
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'about_algorithms' %}" class="btn btn-secondary">⬅️ Orqaga</a>
+    </div>
+    
+    <footer>
+        <p>© 2025 Kriptografiya asoslari | Hill shifrlash (2×2 va 3×3 matritsalar)</p>
+    </footer>
+</body>
+</html>

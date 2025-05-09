@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sezar Shifrlash va Simulyatsiya</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+      background-color: #f8f9fa;
+    }
+
+    h1, h4 {
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    textarea, input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    fieldset {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+
+    legend {
+      padding: 0 5px;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    button#simulateButton {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    button#backButton {
+      background-color: #6c757d;
+      color: #fff;
+    }
+
+    .step {
+      background: #f1f1f1;
+      border-left: 4px solid #007bff;
+      padding: 8px;
+      margin-bottom: 5px;
+      font-family: monospace;
+    }
+
+    #steps {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .result {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      background: #e9ffe9;
+      border: 1px solid #4CAF50;
+      font-weight: bold;
+      word-wrap: break-word;
+    }
+
+    .alert {
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 10px;
+      border-top: 1px solid #ccc;
+      color: #777;
+      font-size: 14px;
+    }
+  </style>
+
+  <!-- MathJax CDN -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+  <h1>Sezar Shifrlash va Simulyatsiya</h1>
+
+  <div class="alert">
+    <h4>🔤 Alifbo indekslari:</h4>
+    <p>
+      A(0), B(1), C(2), D(3), E(4), F(5), G(6), H(7), I(8), J(9), K(10), L(11), M(12),<br>
+      N(13), O(14), P(15), Q(16), R(17), S(18), T(19), U(20), V(21), W(22), X(23), Y(24), Z(25)
+    </p>
+  </div>
+
+  <div class="alert">
+    <h4>🧮 Shifrlash formulasi:</h4>
+    <p>$$ C_i = (M_i + K) \mod 26 $$</p>
+
+    <h4>🔓 Deshifrlash formulasi:</h4>
+    <p>$$ M_i = (C_i - K + 26) \mod 26 $$</p>
+
+    <p>
+      Bu yerda:<br>
+      $M_i$ — xabar harfining indeksi<br>
+      $K$ — kalit (shift)<br>
+      $C_i$ — shifrlangan harfning indeksi
+    </p>
+  </div>
+
+  <div class="form-group">
+    <label for="text">Matn:</label>
+    <textarea id="text" rows="4" placeholder="Shifrlamoqchi bo‘lgan matnni kiriting..."></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="key">Kalit (0–25):</label>
+    <input type="number" id="key" min="0" max="25" placeholder="Masalan: 3">
+  </div>
+
+  <fieldset>
+    <legend>Simulyatsiya turi</legend>
+    <label><input type="radio" name="simAction" value="encrypt" checked> Shifrlash</label>
+    <label><input type="radio" name="simAction" value="decrypt"> Deshifrlash</label>
+  </fieldset>
+
+  <button type="button" id="simulateButton">Simulyatsiya</button>
+  <button type="button" id="backButton">Orqaga</button>
+
+  <div id="steps">
+    <h3>Qadamlar:</h3>
+    <div id="stepsContent"></div>
+  </div>
+
+  <div id="result" class="result"></div>
+
+  <script>
+    const simulateButton = document.getElementById('simulateButton');
+    const backButton = document.getElementById('backButton');
+    const stepsContainer = document.getElementById('steps');
+    const stepsContent = document.getElementById('stepsContent');
+    const resultContainer = document.getElementById('result');
+
+    simulateButton.addEventListener('click', () => {
+      const text = document.getElementById('text').value;
+      const key = parseInt(document.getElementById('key').value, 10);
+      if (!text) return alert('Matnni kiriting.');
+      if (isNaN(key) || key < 0 || key > 25) return alert('Kalitni 0 dan 25 gacha bo‘lgan butun son sifatida kiriting.');
+
+      const action = document.querySelector('input[name="simAction"]:checked').value;
+      const { steps, result } = simulateCaesar(text, key, action);
+
+      stepsContent.innerHTML = '';
+      stepsContainer.style.display = 'block';
+      resultContainer.textContent = result;
+      resultContainer.style.display = 'none';
+
+      let idx = 0;
+      const intervalId = setInterval(() => {
+        if (idx >= steps.length) {
+          clearInterval(intervalId);
+          resultContainer.style.display = 'block';
+          return;
+        }
+        const div = document.createElement('div');
+        div.className = 'step';
+        div.textContent = steps[idx++];
+        stepsContent.appendChild(div);
+      }, 400);
+    });
+
+    backButton.addEventListener('click', () => window.history.back());
+
+    function simulateCaesar(inputText, key, action) {
+      const steps = [];
+      let result = '';
+      for (let char of inputText) {
+        if (!char.match(/[a-zA-Z]/)) {
+          steps.push(`'${char}' → '${char}'`);
+          result += char;
+          continue;
+        }
+        const code = char.charCodeAt(0);
+        const base = code >= 65 && code <= 90 ? 65 : 97;
+        const shiftedCode = action === 'encrypt'
+          ? (code - base + key + 26) % 26 + base
+          : (code - base - key + 26) % 26 + base;
+        const newChar = String.fromCharCode(shiftedCode);
+        steps.push(`'${char}' ${action === 'encrypt' ? '+' : '-'} ${key} → '${newChar}'`);
+        result += newChar;
+      }
+      return { steps, result };
+    }
+  </script>
+</body>
+</html>

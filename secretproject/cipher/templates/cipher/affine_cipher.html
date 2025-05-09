@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Affine  Simulyatsiyasi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .result-line {
+            font-family: monospace;
+            font-size: 18px;
+            white-space: pre;
+        }
+        .sim-step {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">🔐 Affine Cipher Simulyatsiyasi</h2>
+
+    <div class="mb-4">
+        <div class="alert alert-info">
+            <h5>📘 Formulalar:</h5>
+            <ul class="mb-0">
+                <li><strong>Shifrlash formulasi:</strong> <code>E(x) = (a × x + b) mod 26</code></li>
+                <li><strong>Deshifrlash formulasi:</strong> <code>D(x) = a⁻¹ × (x - b) mod 26</code></li>
+                <li><strong>a⁻¹</strong> — bu <code>a</code> ning 26 ga nisbatan modulyar teskari qiymati.</li>
+            </ul>
+        </div>
+    </div>
+    
+    <form id="affineForm" onsubmit="simulateAffine(event)">
+        <div class="mb-3">
+            <label for="inputText" class="form-label">Matn kiriting:</label>
+            <input type="text" class="form-control" id="inputText" required>
+        </div>
+
+        <div class="mb-3 row">
+            <div class="col">
+                <label class="form-label">a qiymati:</label>
+                <input type="number" class="form-control" id="a" value="5" required>
+            </div>
+            <div class="col">
+                <label class="form-label">b qiymati:</label>
+                <input type="number" class="form-control" id="b" value="8" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Amal turi:</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="mode" id="encrypt" value="encrypt" checked>
+                <label class="form-check-label" for="encrypt">Shifrlash</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="mode" id="decrypt" value="decrypt">
+                <label class="form-check-label" for="decrypt">Deshifrlash</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Simulyatsiya</button>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Orqaga</a>
+    </form>
+
+    <div class="mt-4">
+        <h5>🧮 Natija:</h5>
+        <div id="simulationResult" class="result-line"></div>
+    </div>
+</div>
+
+<script>
+function modInverse(a, m) {
+    a = ((a % m) + m) % m;
+    for (let x = 1; x < m; x++) {
+        if ((a * x) % m === 1) return x;
+    }
+    return null;
+}
+
+function simulateAffine(event) {
+    event.preventDefault();
+    const text = document.getElementById('inputText').value.toUpperCase();
+    const a = parseInt(document.getElementById('a').value);
+    const b = parseInt(document.getElementById('b').value);
+    const mode = document.querySelector('input[name="mode"]:checked').value;
+    const resultDiv = document.getElementById('simulationResult');
+    resultDiv.innerHTML = "";
+
+    if (mode === "decrypt" && modInverse(a, 26) === null) {
+        resultDiv.innerHTML = "<span class='text-danger'>⚠️ a va 26 o‘zaro tub emas. Modulyar teskari mavjud emas!</span>";
+        return;
+    }
+
+    let result = "";
+
+    for (let i = 0; i < text.length; i++) {
+        let char = text[i];
+        if (char >= 'A' && char <= 'Z') {
+            let x = char.charCodeAt(0) - 65;
+            let transformed;
+            if (mode === "encrypt") {
+                transformed = (a * x + b) % 26;
+            } else {
+                let a_inv = modInverse(a, 26);
+                transformed = (a_inv * (x - b + 26)) % 26;
+            }
+            const outChar = String.fromCharCode(transformed + 65);
+            result += outChar;
+
+            resultDiv.innerHTML += `<div class="sim-step">${char} → ${outChar}</div>`;
+        } else {
+            result += char;
+            resultDiv.innerHTML += `<div class="sim-step">${char} (o'zgarmaydi)</div>`;
+        }
+    }
+
+    resultDiv.innerHTML += `<hr><strong>Yakuniy natija:</strong> ${result}`;
+}
+</script>
+</body>
+</html>

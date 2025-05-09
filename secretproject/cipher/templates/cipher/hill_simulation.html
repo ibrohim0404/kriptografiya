@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hill Shifrlash va Simulyatsiya</title>
+    
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+        h1 { text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        textarea, input[type="number"], select { width: 100%; padding: 8px; box-sizing: border-box; }
+        .matrix-inputs { display: grid; gap: 10px; margin-bottom: 15px; }
+        fieldset { border: 1px solid #ccc; padding: 10px; margin-bottom: 15px; }
+        legend { padding: 0 5px; font-weight: bold; }
+        button { padding: 10px 20px; margin-right: 10px; border: none; border-radius: 4px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        button#simulateButton { background-color: #007bff; color: #fff; }
+        button#backButton { background-color: #6c757d; color: #fff; }
+        .step { background: #f9f9f9; border-left: 4px solid #007bff; padding: 8px; margin-bottom: 5px; font-family: monospace; }
+        #steps { display: none; margin-top: 20px; }
+        .result { display: none; margin-top: 20px; padding: 10px; background: #e9ffe9; border: 1px solid #4CAF50; font-weight: bold; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+    <h1>Hill Shifrlash va Simulyatsiya</h1>
+    <h4> Alifbo va Indekslar:</h4>
+    <p>
+        A(0), B(1), C(2), D(3), E(4), F(5), G(6), H(7), I(8), J(9), K(10), L(11), M(12),<br>
+        N(13), O(14), P(15), Q(16), R(17), S(18), T(19), U(20), V(21), W(22), X(23), Y(24), Z(25)
+    </p>
+
+    <h4>🧮 Shifrlash formulasi: <span style="color: red;">\( C_I = (M_I \cdot K) \mod 26 \)</span></h4>
+    
+    <h4>🔓 Deshifrlash formulasi: <span style="color: red;">\( M_I = (C_I \cdot K^{-1}) \mod 26 \)</span></h4>
+    <div class="form-group">
+        <label for="text">Matn (avtomatik padding bilan):</label>
+        <textarea id="text" rows="4" placeholder="Matnni lotin harflarida kiriting..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="matrixSize">Kalit matrisi o‘lchami:</label>
+        <select id="matrixSize">
+            <option value="2">2×2</option>
+            <option value="3">3×3</option>
+        </select>
+    </div>
+
+    <fieldset>
+        <legend>Kalit matrisi</legend>
+        <div id="matrixContainer" class="matrix-inputs"></div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Amal turi</legend>
+        <label><input type="radio" name="simAction" value="encrypt" checked> Shifrlash</label>
+        <label><input type="radio" name="simAction" value="decrypt"> Deshifrlash</label>
+    </fieldset>
+
+    <button type="button" id="simulateButton">Simulyatsiya</button>
+    <button type="button" id="backButton">Orqaga</button>
+
+    <div id="steps">
+        <h3>Qadamlar:</h3>
+        <div id="stepsContent"></div>
+    </div>
+
+    <div id="result" class="result"></div>
+
+    <script>
+        const matrixContainer = document.getElementById('matrixContainer');
+        const matrixSizeSelect = document.getElementById('matrixSize');
+        const stepsContainer = document.getElementById('steps');
+        const stepsContent = document.getElementById('stepsContent');
+        const resultContainer = document.getElementById('result');
+
+        function renderMatrixInputs(n) {
+            matrixContainer.innerHTML = '';
+            matrixContainer.style.gridTemplateColumns = `repeat(${n}, 1fr)`;
+            for (let i = 0; i < n * n; i++) {
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.id = `k${i}`;
+                matrixContainer.appendChild(input);
+            }
+        }
+
+        renderMatrixInputs(2);
+        matrixSizeSelect.addEventListener('change', e => renderMatrixInputs(+e.target.value));
+
+        document.getElementById('simulateButton').addEventListener('click', () => {
+            let text = document.getElementById('text').value.trim();
+            const n = +matrixSizeSelect.value;
+
+            // Tekshiruv va padding
+            if (!/^[A-Za-z]+$/.test(text)) {
+                return alert('Matn faqat lotin harflaridan iborat bo‘lishi kerak.');
+            }
+            const rem = text.length % n;
+            if (rem !== 0) {
+                const pad = n - rem;
+                text += 'X'.repeat(pad);
+                alert(`${pad} ta 'X' belgisi qo‘shildi, yangi uzunlik: ${text.length}`);
+            }
+
+            // Matrisni yig‘ish
+            const vals = [];
+            for (let i = 0; i < n * n; i++) {
+                const v = parseInt(document.getElementById(`k${i}`).value, 10);
+                if (isNaN(v)) return alert('Matris elementlarini to‘liq kiriting.');
+                vals.push(((v % 26) + 26) % 26);
+            }
+            const mat = [];
+            for (let i = 0; i < n; i++) mat.push(vals.slice(i * n, i * n + n));
+
+            // Invertibility tekshiruvi
+            const det = determinant(mat);
+            const invDet = modInverse(det);
+            if (!invDet) {
+                return alert(`Determinant ${det} mod26 bo‘yicha teskari mavjud emas.`);
+            }
+
+            const action = document.querySelector('input[name="simAction"]:checked').value;
+            const { steps, result } = simulateHill(text, mat, action);
+
+            stepsContent.innerHTML = '';
+            stepsContainer.style.display = 'block';
+            resultContainer.textContent = result;
+            resultContainer.style.display = 'none';
+
+            let idx = 0;
+            const intervalId = setInterval(() => {
+                if (idx >= steps.length) {
+                    clearInterval(intervalId);
+                    resultContainer.style.display = 'block';
+                    return;
+                }
+                const div = document.createElement('div');
+                div.className = 'step';
+                div.textContent = steps[idx++];
+                stepsContent.appendChild(div);
+            }, 500);
+        });
+
+        document.getElementById('backButton').addEventListener('click', () => window.history.back());
+
+        function modInverse(n) {
+            n = ((n % 26) + 26) % 26;
+            for (let i = 1; i < 26; i++) if ((n * i) % 26 === 1) return i;
+            return null;
+        }
+        function determinant(m) {
+            const n = m.length;
+            if (n === 2) {
+                return ((m[0][0]*m[1][1] - m[0][1]*m[1][0]) % 26 + 26) % 26;
+            } else {
+                const [a,b,c,d,e,f,g,h,i] = m.flat();
+                return ((a*(e*i - f*h) - b*(d*i - f*g) + c*(d*h - e*g)) % 26 + 26) % 26;
+            }
+        }
+        function adjugate3(m) {
+            const [a,b,c,d,e,f,g,h,i] = m.flat();
+            return [
+                [e*i - f*h, -(b*i - c*h), b*f - c*e],
+                [-(d*i - f*g), a*i - c*g, -(a*f - c*d)],
+                [d*h - e*g, -(a*h - b*g), a*e - b*d]
+            ].map(row => row.map(v => ((v % 26) + 26) % 26));
+        }
+        function invertMatrix(m) {
+            const n = m.length;
+            const det = determinant(m);
+            const invDet = modInverse(det);
+            if (!invDet) return null;
+            if (n === 2) {
+                const [[a,b],[c,d]] = m;
+                return [[d*invDet % 26, (-b+26)*invDet % 26], [(-c+26)*invDet % 26, a*invDet % 26]];
+            }
+            const adj = adjugate3(m);
+            const adjT = adj[0].map((_, i) => adj.map(r => r[i]));
+            return adjT.map(row => row.map(v => v * invDet % 26));
+        }
+        function simulateHill(text, mat, action) {
+            const steps = [];
+            let result = '';
+            let M = mat;
+            if (action === 'decrypt') {
+                M = invertMatrix(mat);
+                steps.push(`Inverse Matrix: [${M.map(r=>`[${r.join(',')}]`).join(',')}]`);
+            }
+            const n = M.length;
+            for (let i = 0; i < text.length; i += n) {
+                const vec = text.slice(i, i+n).toUpperCase().split('').map(ch => ch.charCodeAt(0) - 65);
+                const prod = Array(n).fill(0).map((_, r) => vec.reduce((sum, v, c) => sum + M[r][c] * v, 0) % 26);
+                const block = prod.map(v => String.fromCharCode(v + 65)).join('');
+                steps.push(`'${text.slice(i,i+n)}' → [${vec.join(',')}] * M → [${prod.join(',')}] → '${block}'`);
+                result += block;
+            }
+            return { steps, result };
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affin Shifrlash Algoritmi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        h2 {
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .formula {
+            background: #e8f4fc;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        .advantages, .disadvantages {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .advantages h3 {
+            color: #27ae60;
+        }
+        .disadvantages h3 {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Affin Shifrlash Algoritmi</h1>
+        
+        <div class="image-container">
+            <p><em>Affin shifrlash sxemasi</em></p>
+        </div>
+        
+        <h2>Affin Shifrlash Algoritmi nima?</h2>
+        <p>Affin shifrlash - bu har bir harfni raqamga aylantirib, uni matematik formuladan o'tkazib, yangi harfga aylantirish asosidagi almashtirish shifri. U ikkita kalitdan foydalanadi: <strong>a</strong> (ko'paytirish uchun) va <strong>b</strong> (qo'shish uchun).</p>
+        
+        <div class="formula">
+            E(x) = (a*x + b) mod m<br>
+            D(y) = a⁻¹*(y - b) mod m
+        </div>
+        
+        <p>Bu yerda:<br>
+        - E(x) - shifrlash funktsiyasi<br>
+        - D(y) - deshifrlash funktsiyasi<br>
+        - x - ochiq matndagi harfning raqamli qiymati<br>
+        - y - shifrlangan harfning raqamli qiymati<br>
+        - m - alifbo uzunligi (masalan, ingliz alifbosi uchun 26)<br>
+        - a⁻¹ - a ning modul m bo'yicha teskarisi</p>
+        
+        <h2>Tarixi</h2>
+        <p>Affin shifrlash algoritmi qadimgi shifrlash usullaridan biri bo'lib, miloddan avvalgi I asrda qo'llanilgan. Uning zamonaviy ko'rinishi 9-asrda arab matematigi <strong>Al-Kindi</strong> tomonidan ishlab chiqilgan. Keyinchalik, 15-asrda italyan olimi <strong>Leon Battista Alberti</strong> tomonidan takomillashtirilgan.</p>
+        
+        <h2>Qo'llanilishi</h2>
+        <p>Affin shifri asosan quyidagi sohalarda qo'llanilgan:</p>
+        <ul>
+            <li>Qadimgi harbiy aloqa</li>
+            <li>Diplomatik yozishmalar</li>
+            <li>Matematik kriptografiyaga kirish</li>
+        </ul>
+        
+        <div class="advantages">
+            <h3>Affin Shifrning Afzalliklari</h3>
+            <ul>
+                <li>Oddiy va tushunarli algoritm</li>
+                <li>Matematik asosga ega</li>
+                <li>Kichik matnlar uchun tez ishlaydi</li>
+                <li>Kriptografiyaning asosiy tushunchalarini tushunishga yordam beradi</li>
+                <li>Kalitlar soni cheklangan bo'lsa ham, sodda hujumlarga chidamli</li>
+            </ul>
+        </div>
+        
+        <div class="disadvantages">
+            <h3>Affin Shifrning Kamchiliklari</h3>
+            <ul>
+                <li>Zamonaviy standartlarga ko'ra juda zaif</li>
+                <li>Faqat 312 ta (m=26 bo'lganda) turli kalit kombinatsiyasi mavjud</li>
+                <li>Freqyent analiziga chidamsiz</li>
+                <li>Faqat harflar bilan ishlaydi, raqamlar va belgilar bilan emas</li>
+                <li>Katta matnlar uchun xavfsiz emas</li>
+            </ul>
+        </div>
+        
+        <h2>Misol</h2>
+        <p>Misol uchun, a=5, b=8 kalitlarni olaylik va "HELLO" so'zini shifrlaymiz:</p>
+        
+        <div class="formula">
+            H (7) → (5×7 + 8) mod 26 = 43 mod 26 = 17 → R<br>
+            E (4) → (5×4 + 8) mod 26 = 28 mod 26 = 2 → C<br>
+            L (11) → (5×11 + 8) mod 26 = 63 mod 26 = 11 → L<br>
+            L (11) → (5×11 + 8) mod 26 = 63 mod 26 = 11 → L<br>
+            O (14) → (5×14 + 8) mod 26 = 78 mod 26 = 0 → A<br>
+            <br>
+            Shifrlangan matn: RCLLA
+        </div>
+        
+        <h2>Xulosa</h2>
+        <p>Affin shifrlash algoritmi kriptografiyaning asosiy tushunchalarini o'rgatish uchun ajoyib misol bo'lib xizmat qiladi. Uning soddaligi va matematik asosliligi uni dastlabki kriptografiya darslari uchun ideal qiladi. Biroq, zamonaviy talablar uchun bu shifr juda zaif hisoblanadi va faqat tarixiy yoki o'quv maqsadlarida qo'llaniladi.</p>
+    </div>
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'about_algorithms' %}" class="btn btn-secondary">⬅️ Orqaga</a>
+    </div>
+    
+    <footer>
+        <p>© 2025 Kriptografiya asoslari | Affin shifrlash algoritmi haqida</p>
+    </footer>
+</body>
+</html>

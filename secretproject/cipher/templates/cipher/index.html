@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shifrlash Algoritmlari</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        h1 {
+            margin-bottom: 30px;
+        }
+        .algorithms {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .algorithms li {
+            text-align: center;
+        }
+        .algorithms a {
+            display: block;
+            text-decoration: none;
+            background-color: #fff;
+            color: #007bff;
+            padding: 15px;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .algorithms a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        footer {
+            background: #e9ecef;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Shifrlash Algoritmlari</h1>
+    </header>
+    <main>
+        <ul class="algorithms">
+            <li><a href="{% url 'sezar' %}">Sezar shifri</a></li>
+            <li><a href="{% url 'vejiner' %}">Vejiner shifri</a></li>
+            <li><a href="{% url 'hill' %}">Hill shifri</a></li>
+            <li><a href="{% url 'affine_cipher' %}">affin shifri</a></li>
+            <div class="text-center mt-4">
+                <a href="{% url 'about_algorithms' %}" class="btn btn-info btn-lg">Shifrlash algoritmlari haqida</a>
+            </div>
+            
+        </ul>
+        
+    </main>
+    <footer>
+        &copy; 2025 Shifrlash Akademiyasi
+    </footer>
+</body>
+</html>

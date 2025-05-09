@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigenère Shifrlash Algoritmi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .advantages, .disadvantages {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .advantages h3 {
+            color: #27ae60;
+        }
+        .disadvantages h3 {
+            color: #e74c3c;
+        }
+        .example {
+            background-color: #eaf7ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        .code {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vigenère Shifrlash Algoritmi</h1>
+    
+    <p>Vigenère shifrlash algoritmi - bu polialfabitli almashtirish shifrlash usuli bo'lib, Sezar shifridan murakkabroq va xavfsizroq hisoblanadi. U bir nechta Sezar shifrlarini ketma-ket qo'llash asosida ishlaydi.</p>
+    
+    <h2>Tarixi</h2>
+    <p>Vigenère shifrlash algoritmi 16-asrda fransuz kriptografi <strong>Blaise de Vigenère</strong> tomonidan ishlab chiqilgan (garchi u avvalroq Leon Battista Alberti tomonidan taklif qilingan bo'lsa ham). U 300 yildan ortiq vaqt davomida "buzilmas shifr" deb hisoblangan.</p>
+    
+    <h2>Shifrlash usuli</h2>
+    <p>Vigenère shifrlashda quyidagilar kerak bo'ladi:</p>
+    <ol>
+        <li>Ochiq matn (shifrlanadigan matn)</li>
+        <li>Kalit so'z yoki ibora</li>
+        <li>Vigenère jadvali (harflar kvadrati)</li>
+    </ol>
+    
+    <div class="table-container">
+        <table>
+            <caption>Vigenère jadvalining bir qismi</caption>
+            <tr>
+                <th></th>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+                <th>D</th>
+                <th>E</th>
+                <th>...</th>
+                <th>Z</th>
+            </tr>
+            <tr>
+                <th>A</th>
+                <td>A</td>
+                <td>B</td>
+                <td>C</td>
+                <td>D</td>
+                <td>E</td>
+                <td>...</td>
+                <td>Z</td>
+            </tr>
+            <tr>
+                <th>B</th>
+                <td>B</td>
+                <td>C</td>
+                <td>D</td>
+                <td>E</td>
+                <td>F</td>
+                <td>...</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <th>C</th>
+                <td>C</td>
+                <td>D</td>
+                <td>E</td>
+                <td>F</td>
+                <td>G</td>
+                <td>...</td>
+                <td>B</td>
+            </tr>
+            <tr>
+                <th>...</th>
+                <td>...</td>
+                <td>...</td>
+                <td>...</td>
+                <td>...</td>
+                <td>...</td>
+                <td>...</td>
+                <td>...</td>
+            </tr>
+            <tr>
+                <th>Z</th>
+                <td>Z</td>
+                <td>A</td>
+                <td>B</td>
+                <td>C</td>
+                <td>D</td>
+                <td>...</td>
+                <td>Y</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="example">
+        <h3>Shifrlash misoli</h3>
+        <p><strong>Ochiq matn:</strong> "SALOM"</p>
+        <p><strong>Kalit:</strong> "KALIT" (matn bilan bir xil uzunlikda takrorlanadi: "KALIT")</p>
+        <p><strong>Shifrlash:</strong></p>
+        <ul>
+            <li>S (18-harf) + K (10-harf) = C (2-harf) [18+10=28, 28-26=2]</li>
+            <li>A (0-harf) + A (0-harf) = A (0-harf)</li>
+            <li>L (11-harf) + L (11-harf) = W (22-harf)</li>
+            <li>O (14-harf) + I (8-harf) = W (22-harf)</li>
+            <li>M (12-harf) + T (19-harf) = F (5-harf) [12+19=31, 31-26=5]</li>
+        </ul>
+        <p><strong>Shifrlangan matn:</strong> <span class="code">CAWWF</span></p>
+    </div>
+    
+    <h2>Deshifrlash usuli</h2>
+    <p>Deshifrlash shifrlashga o'xshash, faqat teskari jarayon:</p>
+    
+    <div class="example">
+        <h3>Deshifrlash misoli</h3>
+        <p><strong>Shifrlangan matn:</strong> "CAWWF"</p>
+        <p><strong>Kalit:</strong> "KALIT"</p>
+        <p><strong>Deshifrlash:</strong></p>
+        <ul>
+            <li>C (2-harf) - K (10-harf) = S (18-harf) [2-10=-8, -8+26=18]</li>
+            <li>A (0-harf) - A (0-harf) = A (0-harf)</li>
+            <li>W (22-harf) - L (11-harf) = L (11-harf)</li>
+            <li>W (22-harf) - I (8-harf) = O (14-harf)</li>
+            <li>F (5-harf) - T (19-harf) = M (12-harf) [5-19=-14, -14+26=12]</li>
+        </ul>
+        <p><strong>Ochiq matn:</strong> <span class="code">SALOM</span></p>
+    </div>
+    
+    <div class="advantages">
+        <h3>Vigenère shifrlashning afzalliklari</h3>
+        <ul>
+            <li>Sezar shifridan ancha xavfsizroq</li>
+            <li>Statistik tahlilga chidamli (qisqa kalitlar bilan bo'lmasa)</li>
+            <li>Har xil uzunlikdagi kalitlardan foydalanish mumkin</li>
+            <li>Bir nechta alifbodan foydalanish tufayli murakkabroq</li>
+            <li>19-asrgacha "buzilmas" deb hisoblangan</li>
+        </ul>
+    </div>
+    
+    <div class="disadvantages">
+        <h3>Vigenère shifrlashning kamchiliklari</h3>
+        <ul>
+            <li>Kalit matndan qisqa bo'lsa, xavfsizlik pasayadi</li>
+            <li>Kalit takrorlansa, shifrni buzish osonlashadi</li>
+            <li>Zamonaviy kompyuterlar uchun hali ham murakkab emas</li>
+            <li>To'g'ri ishlatilmasa, Sezar shifriga qaytadi</li>
+            <li>Kasiski testi yordamida buzish mumkin</li>
+        </ul>
+    </div>
+    
+    <h2>Zamonaviy kriptografiyadagi o'rni</h2>
+    <p>Vigenère shifrlash algoritmi zamonaviy kriptografiya standartlariga ko'ra xavfsiz hisoblanmaydi, ammo u tarixiy ahamiyatga ega va polialfabitli shifrlashning asosiy tamoyillarini tushunish uchun yaxshi misoldir. Zamonaviy shifrlash algoritmlarining ko'plari Vigenère shifrining rivojlangan variantlari hisoblanadi.</p>
+    
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'about_algorithms' %}" class="btn btn-secondary">⬅️ Orqaga</a>
+    </div>
+    
+    <footer>
+        <p>© 2025 Kriptografiya asoslari | Vigenère shifrlash algoritmi haqida</p>
+    </footer>
+</body>
+</html>
